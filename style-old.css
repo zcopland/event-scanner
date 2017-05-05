@@ -1,0 +1,113 @@
+body {
+    background-color: #009999; /* blue-ish */
+    color: #FFFFFF; /* white */
+}
+button {
+    border: none;
+    color: #555555; /* black */
+    background-color: #FFFFFF; /* white */
+    padding: 10px 26px;
+    font-size: 16px;
+    text-align: center;
+    margin: 10px;
+    border-radius: 8px;
+}
+button:hover {
+    color: #FFFFFF; /* white */
+    background-color: #555555; /* black */
+}
+.loginLabel {
+    text-align: center;
+    font-size: 40px;
+}
+.formDiv {
+    display: block;
+    text-align: center;
+}
+.searchForm {
+    margin: auto;
+    flex-wrap: nowrap;
+}
+label {
+    display: inline-block;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-right: 0px;
+    margin-right: 5px;
+}
+form {
+    margin: auto;
+    padding: 40px 0;
+    width: 50%;
+    text-align: center;
+}
+legend {
+    text-align: center;
+}
+.loginFieldset {
+    width: 400px;
+    margin-top: 30px;
+    position: absolute;
+    left: 33%;
+    text-align: center;
+}
+.loginForm {
+    margin: auto;
+    padding: 10px 0;
+    width: 50%;
+}
+.loginBtn {
+    color: #FFFFFF;
+    background-color: burlywood;
+}
+.loginBtn:hover {
+    color: burlywood;
+    background-color: #FFFFFF;
+}
+.appName {
+    font-size: 50px;
+    margin-top: 130px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 9px;
+}
+.cornerBtn {
+    position: fixed;
+    bottom: 0px;
+    right: 10px;
+    background-color: #FFFFFF; /* white */
+    color: #BC8F8F; /* rosybrown */
+}
+.cornerBtn:hover {
+    background-color: #BC8F8F; /* rosybrown */
+    color: #FFFFFF; /* white */
+}
+.noSelect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+ul {
+    list-style-type: none;
+}
+.indent {
+    position: absolute;
+    display: inline;
+    left: 20px;
+}
+.errorMessage {
+    font-size: 160px;
+    color: #F5FFFA;
+    position: absolute;
+    text-align: center;
+}
+.bannedList {
+    position: fixed;
+    bottom: 10px;
+    display: block;
+    right: 42%;
+    padding-right: 40px;
+}

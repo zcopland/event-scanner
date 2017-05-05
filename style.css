@@ -1,0 +1,185 @@
+.asterix {
+	display: inline;
+	color: red;
+}
+body {
+    background-color: #CAEBF2; /* Sky */
+    color: #FF3B3F; /* Watermellon */
+}
+.j {
+    color: #000000;
+}
+.btn-styled {
+    border: none;
+    color: #555555; /* black */
+    background-color: #FFFFFF; /* white */
+    padding: 10px 26px;
+    font-size: 16px;
+    text-align: center;
+    margin: 10px;
+    border-radius: 8px;
+}
+.btn-styled:hover {
+    color: #FFFFFF; /* white */
+    background-color: #555555; /* black */
+}
+.center {
+    text-align: center;
+}
+.black-color {
+    color: #000000;
+}
+.watermellon-color {
+    color: #FF3B3F; /* Watermellon */
+}
+.watermellon-background {
+    background-color: #FF3B3F; /* Watermellon */
+}
+.carbon-color {
+    color: #A9A9A9; /* Carbon */
+}
+.carbon-background {
+    background-color: #A9A9A9; /* Carbon */
+}
+.sky-color {
+    color: #CAEBF2; /* Sky */
+}
+.sky-background {
+    background-color: #CAEBF2; /* Sky */
+}
+/*
+button:hover {
+    color: #FFFFFF; /* white 
+    background-color: #555555; /* black 
+}
+*/
+.loginLabel {
+    text-align: center;
+    font-size: 40px;
+}
+#loginDiv {
+    background-color: #EFEFEF; /* Neutral */
+    width: 500px;
+    padding: 50px 10px;
+}
+.center {
+    margin: auto;
+    width: 50%;
+}
+.formDiv {
+    display: block;
+    text-align: center;
+}
+.searchForm {
+    margin: auto;
+    flex-wrap: nowrap;
+}
+label {
+    display: inline-block;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-right: 0px;
+    margin-right: 5px;
+}
+form {
+    margin: auto;
+    padding: 40px 0;
+    width: 50%;
+    text-align: center;
+}
+legend {
+    text-align: center;
+}
+.loginFieldset {
+    width: 400px;
+    margin-top: 30px;
+    position: absolute;
+    left: 33%;
+    text-align: center;
+}
+.loginForm {
+    margin: auto;
+    padding: 10px 0;
+    width: 50%;
+}
+.loginBtn {
+    color: #FFFFFF;
+    background-color: burlywood;
+}
+.loginBtn:hover {
+    color: burlywood;
+    background-color: #FFFFFF;
+}
+.appName {
+    font-size: 50px;
+    margin-top: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 9px;
+}
+.cornerBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #FFFFFF; /* white */
+    color: #FF3B3F; /* Watermellon */
+}
+.cornerBtn:hover {
+    background-color: #FF3B3F; /* Watermellon */
+    color: #FFFFFF; /* white */
+}
+.noSelect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+ul {
+    list-style-type: none;
+}
+.indent {
+    position: absolute;
+    display: inline;
+    left: 20px;
+}
+.errorMessage {
+    font-size: 160px;
+    color: #F5FFFA;
+    position: absolute;
+    text-align: center;
+}
+#eventCounterDiv {
+    width: 300px;
+    background-color: #A9A9A9;
+}
+#bannedList {
+    width: 180px;
+    display: block;
+    margin: auto;
+}
+.counter-btn {
+    width: 70px;
+    height: 23px;
+    background-color: #FFFFFF;
+    color: #CAEBF2;
+    font-size: 14px;
+    text-align: center;
+}
+.counter-btn:hover {
+    background-color: #CAEBF2;
+    color: #FFFFFF;
+}
+.right-align {
+    text-align: right;
+}
+.left-align {
+    text-align: left;
+}
+@media screen and (max-width: 550px) {
+    #loginDiv {
+        width: 375px;
+        padding: 30px 0;
+    }
+}
