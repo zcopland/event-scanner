@@ -15,12 +15,21 @@ $sql = "UPDATE partyList_{$org}_{$school} SET inProgress=FALSE WHERE inProgress=
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
-    $sql = "INSERT INTO `partyList_{$org}_{$school}`(`eventTitle`, `count`, `eventDate`, `inProgress`) VALUES ('{$title}', 0, '{$date}', TRUE);";
+    $sql = "SELECT * FROM `partyList_{$org}_{$school}` WHERE `eventTitle`='{$title}' AND `eventDate`='{$date}';";
     $result2 = mysqli_query($conn, $sql);
-    if ($result2) {
-        echo true;
-    } else {
-        echo 'Error creating event!';
+    $row = mysqli_fetch_assoc($result2);
+    if ($row > 0) {
+        /* eventTitle & eventDate exist, do not insert into table */
+        echo "Error. Event title: '{$title}' on today's date ({$date}) already exists!";
+    } else if ($row <= 0) {
+        /* eventTitle & eventDate do not exist, insert into table */
+        $sql = "INSERT INTO `partyList_{$org}_{$school}`(`eventTitle`, `count`, `eventDate`, `inProgress`) VALUES ('{$title}', 0, '{$date}', TRUE);";
+        $result3 = mysqli_query($conn, $sql);
+        if ($result3) {
+            echo true;
+        } else {
+            echo 'Error creating event!';
+        }
     }
 } else {
     echo 'Error setting all events to false!';
