@@ -98,6 +98,11 @@ if ($org != 'Admin' && $org != 'admin') {
                     <h4 id="counter"></h4>
                 </div>
             </div>
+            <div class="row">
+                <div class="center">
+                    <button id="listEvents" class="btn btn-sm btn-default" name="listEvents">List Events</button>
+                </div>
+            </div>
         </div>
         <!-- Modal -->
       <div class="modal fade" id="myModal" role="dialog">
@@ -191,6 +196,7 @@ HTML;
         
         $('#resumeEvent').hide();
         $('#stopEvent').hide();
+        $('#pauseEvent').hide();
         $('#count-h4').hide();
         
         $('#users-list').hide();
@@ -352,6 +358,8 @@ HTML;
                         $('#count-h4').show();
                         $('#createEvent').hide();
                         $('#stopEvent').show();
+                        $('#pauseEvent').show();
+                        $('#listEvents').hide();
                         $('#eventTitle').prop('disabled', true);
                         $('#counter').html(counter);
                         eventStart = true;
@@ -367,16 +375,19 @@ HTML;
             }
             console.log('event start = ' + eventStart);
         });
+        /* Pause event button */
         $('#pauseEvent').click(function() {
             $('#resumeEvent').show();
             $(this).hide();
             paused = true;
         });
+        /* Resume event button */
         $('#resumeEvent').click(function() {
             $('#pauseEvent').show();
             $(this).hide();
             paused = false;
         });
+        /* Stop event button */
         $('#stopEvent').click(function() {
             var title = $('#eventTitle').val();
             $.ajax({type: "POST", url: "event-db/stopEvent.php", data: {
@@ -391,11 +402,28 @@ HTML;
                     $('#eventTitle').prop('disabled', false);
                     $('#counter').html('');
                     $('#eventTitle').val('');
+                    $('#pauseEvent').hide();
+                    $('#listEvents').show();
                     eventStart = false;
                 } else {
                     $('#modal-text').html(result);
                     $("#myModal").modal();
                     $('#eventTitle').prop('disabled', true); 
+                }
+            }});
+        });
+        $('#listEvents').click(function() {
+            var title = $('#eventTitle').val();
+            $.ajax({type: "POST", url: "event-db/listEvents.php", data: {
+                school: school,
+                org: org
+            }, success: function(result){
+                if (result != false) {
+                    $('#modal-text').html(result);
+                    $("#myModal").modal();
+                } else {
+                    $('#modal-text').html('Error listing results!');
+                    $("#myModal").modal();
                 }
             }});
         });
