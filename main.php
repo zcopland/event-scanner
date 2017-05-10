@@ -257,7 +257,7 @@ HTML;
                             school: school,
                             org: org
                         }, success: function(result){
-                            if (result) {
+                            if (result == true) {
                                 //student has been banned
                                 changeBGColor(normal);
                                 $('#status').empty()
@@ -282,7 +282,7 @@ HTML;
                             school: school,
                             org: org
                         }, success: function(result){
-                            if (result) {
+                            if (result == true) {
                                 //student was removed from list
                                 changeBGColor(normal);
                                 $('#status').empty()
@@ -339,27 +339,33 @@ HTML;
         /* setting the textfield to be selected */
         idTextfield.select();
         
-        /* hide create button after click */
+        /* create event button */
         $('#createEvent').click(function() {
             var title = $('#eventTitle').val();
-            $.ajax({type: "POST", url: "event-db/createEvent.php", data: {
-                title: title,
-                school: school,
-                org: org
-            }, success: function(result){
-                if (result) {
-                    $('#count-h4').show();
-                    $('#createEvent').hide();
-                    $('#stopEvent').show();
-                    $('#eventTitle').prop('disabled', true);
-                    $('#counter').html(counter);
-                    eventStart = true;
-                } else {
-                    $('#modal-text').html(result);
-                    $("#myModal").modal();
-                    $('#eventTitle').prop('disabled', false); 
-                }
-            }});
+            if (title.length >= 5) {
+                $.ajax({type: "POST", url: "event-db/createEvent.php", data: {
+                    title: title,
+                    school: school,
+                    org: org
+                }, success: function(result){
+                    if (result == true) {
+                        $('#count-h4').show();
+                        $('#createEvent').hide();
+                        $('#stopEvent').show();
+                        $('#eventTitle').prop('disabled', true);
+                        $('#counter').html(counter);
+                        eventStart = true;
+                    } else {
+                        $('#modal-text').html(result);
+                        $("#myModal").modal();
+                        $('#eventTitle').prop('disabled', false); 
+                    }
+                }});
+            } else {
+                $('#modal-text').html('Event title is too short!');
+                $("#myModal").modal();
+            }
+            console.log('event start = ' + eventStart);
         });
         $('#pauseEvent').click(function() {
             $('#resumeEvent').show();
@@ -378,13 +384,14 @@ HTML;
                 school: school,
                 org: org
             }, success: function(result){
-                if (result) {
+                if (result == true) {
                     $('#count-h4').hide();
                     $('#createEvent').show();
                     $('#stopEvent').hide();
                     $('#eventTitle').prop('disabled', false);
                     $('#counter').html('');
                     $('#eventTitle').val('');
+                    eventStart = false;
                 } else {
                     $('#modal-text').html(result);
                     $("#myModal").modal();
