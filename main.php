@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/New_York');
 if (!isset($_SESSION['org'])  || empty($_SESSION['org'])) {
     header('Location: index.php');
 }
@@ -19,6 +20,8 @@ $school = '';
 $email = '';
 $org = '';
 $isAdmin = false;
+$date = date('n/j/y');
+$month = date('M');
 
 $id = $_SESSION['id'];
 $sql = "SELECT * FROM user WHERE id='$id'";
@@ -78,7 +81,7 @@ if ($org != 'Admin' && $org != 'admin') {
                 <label for="eventTitle">Event title : </label>
             </div>
             <div class="row">
-                <input id="eventTitle" name="evenTitle" placeholder="Spring Fling 2017" />
+                <?php echo "<input id='eventTitle' name='evenTitle' placeholder='{$month} House Party' />"; ?>
                 <button id="createEvent" class="btn btn-sm btn-success" name="createEvent">Create</button>
             </div><br/>
             <div class="row">
@@ -313,9 +316,8 @@ HTML;
                             org: org
                         }, success: function(result){
                             changeBGColor(normal);
-                            $('#bannedList').empty();
-                            $('#bannedList').show();
-                            $('#bannedList').append(result);
+                            $('#modal-text').html(result);
+                            $("#myModal").modal();
                         }});
                     break;
                 default:
