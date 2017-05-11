@@ -8,7 +8,7 @@ $school = $_POST['school'];
 $school = ucwords($school);
 $school = str_replace(' ', '', $school);
 
-$opening = "<div id=\"events-list\" class=\"table-responsive\"><table class='table table-hover'><tr><th>Event title</th><th>Date</th><th>Amount</th></tr>";
+$opening = "<div id=\"events-list\" class=\"table-responsive\"><table class='table table-hover'><tr><th>Event title</th><th>Date</th><th>Guests</th></tr>";
 $body = '';
 $closing = "</tr></table></div>";
 
