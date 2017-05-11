@@ -110,12 +110,18 @@ include 'db/dbh.php';
             	}
         	});
         	$('#verification').focusout(function(){
-            	if ($(this).val() == '1481297313') {
-                	ver_match = true;
-                	ver_alert.hide();
-            	} else {
-                	ver_match = false;
-                	ver_alert.show();
+            	var code = $(this).val();
+            	var username = document.getElementById('username').value;
+            	if (code.length >= 7 && ver_match == false) {
+                	$.ajax({type: "POST", url: "db/check-code.php", data: {username: username, code: code}, success: function(result){
+                        if (result == true) {
+                            ver_match = true;
+                            ver_alert.hide();
+                        } else {
+                            ver_match = false;
+                            ver_alert.show();
+                        }
+                    }});
             	}
         	});
         	$('#submitbtn').click(function(){
