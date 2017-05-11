@@ -49,12 +49,12 @@ function listBanned() {
     <fieldset class="bannedList">
       <legend>Banned List</legend>
       <br/>
-      <ul>
+      <ol id="bannedOL">
 TEXT;
     while ($row = mysqli_fetch_assoc($result)) { 
         $text .= "<li>" . $row['uid'] . "</li>";
     }
-    $text .= '</ul>';
+    $text .= '</ol>';
     $text .= '</fieldset>';
     echo $text;
 }
