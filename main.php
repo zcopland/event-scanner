@@ -147,6 +147,7 @@ if ($isAdmin) {
 <br/>
 <div class="contianer">
 <button class="btn vermillion-bg" type="submit" id="showUsers" name="showUsers">Show Users</button>
+<button class="btn vermillion-bg" id="showCodes" name="showCodes">Verification Codes</button>
 </div>
 <br/><br/>
 HTML;
@@ -157,7 +158,7 @@ HTML;
 	while ($row = mysqli_fetch_assoc($result)) { 
 		echo <<<TEXT
 <tr>
-  <td>{$row["uid"]}</td>
+  <td>{$row['uid']}</td>
   <td>{$row['email']}</td>
   <td>{$row['school']}</td>
   <td>{$row['org']}</td>
@@ -165,6 +166,19 @@ HTML;
 TEXT;
     }
     echo "</tr></table></div>";
+
+$sql = "SELECT * FROM ver_codes";
+$result = mysqli_query($conn, $sql);
+echo "<div id=\"codes-list\" class=\"container table-responsive\"><table class='table table-hover'><tr><th>Code</th><th>Used?</th><th>usedBy</th></tr>";
+while ($row = mysqli_fetch_assoc($result)) { 
+	echo <<<TEXT
+<tr>
+<td>{$row['code']}</td>
+<td>{$row['used']}</td>
+<td>{$row['usedBy']}</td>
+TEXT;
+}
+echo "</tr></table></div>";
 
 } 
 ?>
@@ -201,6 +215,7 @@ HTML;
         $('#stopEvent').hide();
         $('#pauseEvent').hide();
         $('#count-h4').hide();
+        $('#codes-list').hide();
         
         $('#users-list').hide();
         //toggling the employee list
@@ -214,115 +229,118 @@ HTML;
             operation = $('#operation').val();
             $('#bannedList').hide();
             $('#status').hide();
-            switch (operation) {
-                case 'Check':
-                    if (checkLength()) {
-                        /* use AJAX every time someone checks an ID */
-                        $.ajax({type: "POST", url: "process-search.php", data: {
-                            studentID: studentID,
-                            operation: operation,
-                            school: school,
-                            org: org
-                        }, success: function(result){
-                            if (result) {
-                                //banned
-                                changeBGColor(red);
-                                $('#status').empty()
-                                $('#status').append('Student is BANNED.');
-                                $('#status').show();
-                            } else {
-                                //not banned
-                                changeBGColor(green);
-                                $('#status').empty()
-                                $('#status').append('Student is allowed.');
-                                $('#status').show();
-                                if (paused == false && eventStart == true) {
-                                    var title = $('#eventTitle').val();
-                                    $.ajax({type: "POST", url: "event-db/updateCounter.php", data: {
-                                        title: title,
-                                        school: school,
-                                        org: org
-                                    }, success: function(result){
-                                        if ($.isNumeric(result)) {
-                                            //update counter
-                                            counter = result;
-                                            $('#counter').html(counter);
-                                        } else {
-                                            $('#modal-text').html(result);
-                                            $("#myModal").modal();
-                                        }
-                                    }});
+            if (checkString(studentID)) {
+                switch (operation) {
+                    case 'Check':
+                        if (checkLength()) {
+                            /* use AJAX every time someone checks an ID */
+                            $.ajax({type: "POST", url: "process-search.php", data: {
+                                studentID: studentID,
+                                operation: operation,
+                                school: school,
+                                org: org
+                            }, success: function(result){
+                                if (result) {
+                                    //banned
+                                    changeBGColor(red);
+                                    $('#status').empty()
+                                    $('#status').append('Student is BANNED.');
+                                    $('#status').show();
+                                } else {
+                                    //not banned
+                                    changeBGColor(green);
+                                    $('#status').empty()
+                                    $('#status').append('Student is allowed.');
+                                    $('#status').show();
+                                    if (paused == false && eventStart == true) {
+                                        var title = $('#eventTitle').val();
+                                        $.ajax({type: "POST", url: "event-db/updateCounter.php", data: {
+                                            title: title,
+                                            school: school,
+                                            org: org
+                                        }, success: function(result){
+                                            if ($.isNumeric(result)) {
+                                                //update counter
+                                                counter = result;
+                                                $('#counter').html(counter);
+                                            } else {
+                                                $('#modal-text').html(result);
+                                                $("#myModal").modal();
+                                            }
+                                        }});
+                                    }
                                 }
-                            }
-                        }});
-                    }
-                    break;
-                case 'Ban':
-                    if (checkLength()) {
+                            }});
+                        }
+                        break;
+                    case 'Ban':
+                        if (checkLength()) {
+                            /* use AJAX every time someone checks an ID */
+                            $.ajax({type: "POST", url: "process-search.php", data: {
+                                studentID: studentID,
+                                operation: operation,
+                                school: school,
+                                org: org
+                            }, success: function(result){
+                                if (result == true) {
+                                    //student has been banned
+                                    changeBGColor(normal);
+                                    $('#status').empty()
+                                    $('#status').append('Student has been banned.');
+                                    $('#status').show();
+                                } else {
+                                    //student is already banned
+                                    changeBGColor(normal);
+                                    $('#status').empty()
+                                    $('#status').append('Student is already banned.');
+                                    $('#status').show();
+                                }
+                            }});
+                        }
+                        break;
+                    case 'UnBan':
+                        if (checkLength()) {
+                            /* use AJAX every time someone checks an ID */
+                            $.ajax({type: "POST", url: "process-search.php", data: {
+                                studentID: studentID,
+                                operation: operation,
+                                school: school,
+                                org: org
+                            }, success: function(result){
+                                if (result == true) {
+                                    //student was removed from list
+                                    changeBGColor(normal);
+                                    $('#status').empty()
+                                    $('#status').append('Student has been removed from list.');
+                                    $('#status').show();
+                                } else {
+                                    //student was not banned
+                                    changeBGColor(normal);
+                                    $('#status').empty()
+                                    $('#status').append('Student was not banned.');
+                                    $('#status').show();
+                                }
+                            }});
+                        }
+                        break;
+                    case 'Banned Students':
                         /* use AJAX every time someone checks an ID */
-                        $.ajax({type: "POST", url: "process-search.php", data: {
-                            studentID: studentID,
-                            operation: operation,
-                            school: school,
-                            org: org
-                        }, success: function(result){
-                            if (result == true) {
-                                //student has been banned
+                            $.ajax({type: "POST", url: "process-search.php", data: {
+                                studentID: studentID,
+                                operation: operation,
+                                school: school,
+                                org: org
+                            }, success: function(result){
                                 changeBGColor(normal);
-                                $('#status').empty()
-                                $('#status').append('Student has been banned.');
-                                $('#status').show();
-                            } else {
-                                //student is already banned
-                                changeBGColor(normal);
-                                $('#status').empty()
-                                $('#status').append('Student is already banned.');
-                                $('#status').show();
-                            }
-                        }});
-                    }
-                    break;
-                case 'UnBan':
-                    if (checkLength()) {
-                        /* use AJAX every time someone checks an ID */
-                        $.ajax({type: "POST", url: "process-search.php", data: {
-                            studentID: studentID,
-                            operation: operation,
-                            school: school,
-                            org: org
-                        }, success: function(result){
-                            if (result == true) {
-                                //student was removed from list
-                                changeBGColor(normal);
-                                $('#status').empty()
-                                $('#status').append('Student has been removed from list.');
-                                $('#status').show();
-                            } else {
-                                //student was not banned
-                                changeBGColor(normal);
-                                $('#status').empty()
-                                $('#status').append('Student was not banned.');
-                                $('#status').show();
-                            }
-                        }});
-                    }
-                    break;
-                case 'Banned Students':
-                    /* use AJAX every time someone checks an ID */
-                        $.ajax({type: "POST", url: "process-search.php", data: {
-                            studentID: studentID,
-                            operation: operation,
-                            school: school,
-                            org: org
-                        }, success: function(result){
-                            changeBGColor(normal);
-                            $('#modal-text').html(result);
-                            $("#myModal").modal();
-                        }});
-                    break;
-                default:
-                    break;
+                                $('#modal-text').html(result);
+                                $("#myModal").modal();
+                            }});
+                        break;
+                    default:
+                        break;
+                }
             }
+            
         }
         
         /* check the length of ID */
@@ -350,7 +368,7 @@ HTML;
         /* create event button */
         $('#createEvent').click(function() {
             var title = $('#eventTitle').val();
-            if (title.length >= 5) {
+            if (title.length >= 5 && checkString(title) == true) {
                 $.ajax({type: "POST", url: "event-db/createEvent.php", data: {
                     title: title,
                     school: school,
@@ -371,11 +389,10 @@ HTML;
                         $('#eventTitle').prop('disabled', false); 
                     }
                 }});
-            } else {
-                $('#modal-text').html('Event title is too short!');
+            } else if (title.length < 5) {
+                $('#modal-text').html('Please double check event title!');
                 $("#myModal").modal();
             }
-            console.log('event start = ' + eventStart);
         });
         /* Pause event button */
         $('#pauseEvent').click(function() {
@@ -428,6 +445,33 @@ HTML;
                     $("#myModal").modal();
                 }
             }});
+        });
+        
+        function checkString(str) {
+            var test = /^[a-zA-Z0-9-_\/ ]*$/;
+            var result = false;
+            if (test.test(str) == true) {
+                result = true;
+            }
+            if (result) {
+                return true;
+            } else {
+                $('#modal-text').html('Please remove special characters from title!');
+                $("#myModal").modal();
+                return false;
+            }
+        }
+        
+        $('#showCodes').click(function() {
+            $('#codes-list').toggle(1000);
+        });
+        
+        /* Preventing the form from submitting when
+            enter key is pressed                    */
+        $(document).keypress(function(event) {
+            if (event.which == '13') {
+                event.preventDefault();
+            }
         });
 
         /* detecting which option is selected */
