@@ -15,10 +15,10 @@ $bannedListArray = [];
 $indexPath = 0;
 $student = '';
 $operator = '';
-$idFormat = '';
-$school = '';
-$email = '';
-$org = '';
+$FORMAT = '';
+$SCHOOL = '';
+$EMAIL = '';
+$ORG = '';
 $isAdmin = false;
 $date = date('n/j/y');
 $month = date('M');
@@ -27,14 +27,14 @@ $id = $_SESSION['id'];
 $sql = "SELECT * FROM user WHERE id='$id'";
 $result = mysqli_query($conn, $sql);
 while ($row = mysqli_fetch_assoc($result)) {
-    $idFormat = $row['idFormat'];
-    $school = $row['school'];
-    $org = $row['org'];
-    $email = $row['email'];
+    $FORMAT = $row['idFormat'];
+    $SCHOOL = $row['school'];
+    $ORG = $row['org'];
+    $EMAIL = $row['email'];
 }
 
-if ($org != 'Admin' && $org != 'admin') {
-    $query = "SELECT * FROM bannedList_{$org}_{$school}";
+if ($ORG != 'Admin' && $ORG != 'admin') {
+    $query = "SELECT * FROM bannedList_{$ORG}_{$SCHOOL}";
     //create select query
     $shouts = mysqli_query($conn, $query);
     //listing it
@@ -42,7 +42,7 @@ if ($org != 'Admin' && $org != 'admin') {
         $bannedListArray[$indexPath] = $row['uid'];
         $indexPath++;
     }
-} else if ($org == 'Admin' || $org == 'admin') {
+} else if ($ORG == 'Admin' || $ORG == 'admin') {
     $isAdmin = true;
 }
 
@@ -66,12 +66,12 @@ if ($org != 'Admin' && $org != 'admin') {
     <div class="searchForm">
     <h1 class="appName black-color">Event ID Checker</h1>
 <?php 
-    if (!empty($org)) {
-        $temp = preg_replace('/(?<!^)([A-Z])/', ' \\1', $org);    
+    if (!empty($ORG)) {
+        $temp = preg_replace('/(?<!^)([A-Z])/', ' \\1', $ORG);    
         echo "<h2 class='black-color center'>{$temp}</h2>";
     }
-    if (!empty($school)) {
-        $temp = preg_replace('/(?<!^)([A-Z])/', ' \\1', $school);
+    if (!empty($SCHOOL)) {
+        $temp = preg_replace('/(?<!^)([A-Z])/', ' \\1', $SCHOOL);
         echo "<h3 class='black-color center'>{$temp}</h3>";
     }
 ?>  
@@ -186,10 +186,10 @@ echo "</tr></table></div>";
     </div>
     </div>
     <?php echo <<<HTML
-    <input type="hidden" id="idFormat" value="$idFormat" />
-    <input type="hidden" id="email" value="$email" />
-    <input type="hidden" id="org" value="$org" />  
-    <input type="hidden" id="school" value="$school" />   
+    <input type="hidden" id="idFormat" value="$FORMAT" />
+    <input type="hidden" id="email" value="$EMAIL" />
+    <input type="hidden" id="org" value="$ORG" />  
+    <input type="hidden" id="school" value="$SCHOOL" />   
 HTML;
     ?>
     <form action="db/logout.php">
@@ -204,9 +204,9 @@ HTML;
         var school = $('#school').val();
         var email = $('#email').val();
         var org = $('#org').val();
-        var red = '#FF0000';
-        var green = '#00FF00';
-        var normal = '#CAEBF2';
+        const RED = '#FF0000';
+        const GREEN = '#00FF00';
+        const NORMAL = '#CAEBF2';
         var paused = false;
         var eventStart = false;
         var counter = 0;
@@ -242,13 +242,13 @@ HTML;
                             }, success: function(result){
                                 if (result) {
                                     //banned
-                                    changeBGColor(red);
+                                    changeBGColor(RED);
                                     $('#status').empty()
                                     $('#status').append('Student is BANNED.');
                                     $('#status').show();
                                 } else {
                                     //not banned
-                                    changeBGColor(green);
+                                    changeBGColor(GREEN);
                                     $('#status').empty()
                                     $('#status').append('Student is allowed.');
                                     $('#status').show();
@@ -284,13 +284,13 @@ HTML;
                             }, success: function(result){
                                 if (result == true) {
                                     //student has been banned
-                                    changeBGColor(normal);
+                                    changeBGColor(NORMAL);
                                     $('#status').empty()
                                     $('#status').append('Student has been banned.');
                                     $('#status').show();
                                 } else {
                                     //student is already banned
-                                    changeBGColor(normal);
+                                    changeBGColor(NORMAL);
                                     $('#status').empty()
                                     $('#status').append('Student is already banned.');
                                     $('#status').show();
@@ -309,13 +309,13 @@ HTML;
                             }, success: function(result){
                                 if (result == true) {
                                     //student was removed from list
-                                    changeBGColor(normal);
+                                    changeBGColor(NORMAL);
                                     $('#status').empty()
                                     $('#status').append('Student has been removed from list.');
                                     $('#status').show();
                                 } else {
                                     //student was not banned
-                                    changeBGColor(normal);
+                                    changeBGColor(NORMAL);
                                     $('#status').empty()
                                     $('#status').append('Student was not banned.');
                                     $('#status').show();
@@ -331,7 +331,7 @@ HTML;
                                 school: school,
                                 org: org
                             }, success: function(result){
-                                changeBGColor(normal);
+                                changeBGColor(NORMAL);
                                 $('#modal-text').html(result);
                                 $("#myModal").modal();
                             }});
