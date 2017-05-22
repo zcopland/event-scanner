@@ -243,7 +243,7 @@ $('#listEvents').click(function() {
             loadChart();
             $("#myModal").modal();
         } else {
-            $('#modal-text').html('Error listing results!');
+            $('#modal-text').html('There are no events to list!');
             $("#myModal").modal();
         }
     }});
